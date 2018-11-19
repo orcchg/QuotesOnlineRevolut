@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/quote_item_height"
+    android:paddingStart="@dimen/quote_item_padding"
+    android:paddingEnd="@dimen/quote_item_padding">
+
+    <ImageView
+        android:id="@+id/iv_icon"
+        android:layout_width="@dimen/quote_item_icon_size"
+        android:layout_height="@dimen/quote_item_icon_size"
+        android:contentDescription="@null"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+    
+    <TextView
+        android:id="@+id/tv_quote_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/std_margin"
+        android:gravity="center_vertical|start"
+        android:textColor="@color/primaryText"
+        android:textSize="@dimen/std_title_size"
+        app:layout_constraintTop_toTopOf="@id/iv_icon"
+        app:layout_constraintStart_toEndOf="@id/iv_icon"
+        tools:text="USD"/>
+
+    <TextView
+        android:id="@+id/tv_quote_description"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/std_margin"
+        android:gravity="center_vertical|start"
+        android:textColor="@color/secondaryText"
+        android:textSize="@dimen/std_text_size"
+        app:layout_constraintTop_toBottomOf="@id/tv_quote_title"
+        app:layout_constraintStart_toEndOf="@id/iv_icon"
+        tools:text="United States Dollar"/>
+
+    <EditText
+        android:id="@+id/et_quantity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="@string/quote_item_et_hint"
+        android:inputType="numberDecimal"
+        android:textColor="@color/primaryText"
+        android:textSize="@dimen/std_text_size_large"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_quote_description"/>
+</androidx.constraintlayout.widget.ConstraintLayout>
