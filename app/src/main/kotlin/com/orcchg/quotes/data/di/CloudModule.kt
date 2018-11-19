@@ -3,6 +3,7 @@ package com.orcchg.quotes.data.di
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.orcchg.quotes.data.BASE_URL
+import com.orcchg.quotes.data.Cloud
 import com.orcchg.quotes.data.RestAdapter
 import dagger.Module
 import dagger.Provides
@@ -45,4 +46,7 @@ class CloudModule {
     @Provides @Singleton
     fun provideRestAdapter(retrofit: Retrofit.Builder): RestAdapter =
             retrofit.baseUrl(BASE_URL).build().create(RestAdapter::class.java)
+
+    @Provides @Singleton
+    fun provideCloud(restAdapter: RestAdapter): Cloud = Cloud(restAdapter)
 }

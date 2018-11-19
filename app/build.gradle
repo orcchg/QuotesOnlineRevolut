@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 28
@@ -27,12 +28,13 @@ android {
 
 dependencies {
     def androidx_version = "1.0.0"
-    def dagger_version = "2.19"
+    def dagger_version = "2.16"
     def lifecycle_version = "2.0.0"
     def okHttp_version = "3.10.0"
     def retrofit_version = "2.4.0"
 
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
+    kapt "com.google.dagger:dagger-compiler:$dagger_version"
     kapt "com.google.dagger:dagger-android-processor:$dagger_version"
 
     implementation fileTree(dir: 'libs', include: ['*.jar'])
