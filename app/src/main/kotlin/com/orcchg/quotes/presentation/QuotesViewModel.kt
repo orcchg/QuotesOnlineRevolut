@@ -30,6 +30,7 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
 
     private var base: String = "USD"  // initial base
     private var multiplier: Double = 1.0
+
     private var source: ConnectableFlowable<Quotes> = source()
     private var firstSubscriber:    Disposable? = null
     private var secondSubscriber:   Disposable? = null

@@ -9,8 +9,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.rv_item_quote.view.*
 import java.util.concurrent.TimeUnit
 
-class QuotesViewHolder(view: View, private val l: ((quote: QuoteVO) -> Unit)?,
-                       private val topItemBound: (() -> Unit)?) : RecyclerView.ViewHolder(view) {
+class QuotesViewHolder(view: View, private val l: ((quote: QuoteVO) -> Unit)?) : RecyclerView.ViewHolder(view) {
 
     companion object {
         var quantityObservable: Observable<Double>? = null
@@ -35,7 +34,6 @@ class QuotesViewHolder(view: View, private val l: ((quote: QuoteVO) -> Unit)?,
                         .skipWhile { et_quantity.tag as Int != 0 }
                         .map { if (it.isBlank()) 0.0 else it.toString().toDouble() }
                         .debounce(DEBOUNCE, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                    topItemBound?.invoke()
                 }
                 setOnClickListener(clickListener)
             }

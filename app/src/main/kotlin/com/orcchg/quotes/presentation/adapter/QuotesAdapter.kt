@@ -33,11 +33,13 @@ class QuotesAdapter(private val l: ((quote: QuoteVO) -> Unit)?, private val topI
                 }
             }
             l?.invoke(quote)
-        }, topItemBound = topItemBound)
+        })
     }
 
     override fun onBindViewHolder(holder: QuotesViewHolder, position: Int) {
         holder.bind(model = models[position])
+
+        if (position == 0) topItemBound?.invoke()
     }
 
     override fun getItemCount(): Int = models.size
