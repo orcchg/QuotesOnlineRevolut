@@ -22,6 +22,6 @@ class QuotesActivity : BaseActivity() {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
 
-        viewModel.quotes()
+        viewModel.start()
     }
 }

@@ -3,6 +3,10 @@ package com.orcchg.quotes.presentation
 import androidx.annotation.DrawableRes
 import androidx.annotation.StringRes
 import com.orcchg.quotes.R
+import com.orcchg.quotes.presentation.adapter.QuoteVO
+
+fun from(key: String, value: Double): QuoteVO =
+    QuoteVO(name = key, description = getDescription(key), iconResId = getIcon(key), quantity = value)
 
 @StringRes
 fun getDescription(key: String): Int =

@@ -6,30 +6,61 @@ import com.orcchg.quotes.domain.Quotes
 import com.orcchg.quotes.presentation.adapter.QuoteVO
 import com.orcchg.quotes.presentation.adapter.QuotesAdapter
 import io.reactivex.disposables.Disposable
+import io.reactivex.flowables.ConnectableFlowable
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
 
-    val adapter = QuotesAdapter {}
-    private var disposable: Disposable? = null
+    val adapter = QuotesAdapter {
+        base = it.name
+        source = source()  // set new base
+        secondSubscriber?.dispose()
+        secondSubscriber = source.subscribe(this::stateQuotesUpdated, Timber::e)
+    }
+
+    private var base: String = "USD"  // initial base
+    private var source: ConnectableFlowable<Quotes> = source()
+    private var firstSubscriber:  Disposable? = null
+    private var secondSubscriber: Disposable? = null
 
     override fun onCleared() {
         super.onCleared()
         clear()
     }
 
-    fun quotes(base: String = "USD") {
-        clear()
-        disposable = cloud.quotes(base).subscribe(this::stateQuotesLoaded, Timber::e)
+    fun start() {
+        firstSubscriber = source.subscribe(this::stateQuotesLoaded, Timber::e)
     }
 
+    /* Internal */
+    // --------------------------------------------------------------------------------------------
     private fun clear() {
-        disposable?.dispose()
+        firstSubscriber?.dispose()
+        secondSubscriber?.dispose()
     }
 
+    private fun source(): ConnectableFlowable<Quotes> {
+        val source = cloud.quotes(base).repeatWhen { it.delay(1, TimeUnit.SECONDS) }.publish()
+        source.connect()
+        return source
+    }
+
+    // ------------------------------------------
     private fun stateQuotesLoaded(quotes: Quotes) {
-        adapter.models = quotes.rates.map {
-            QuoteVO(name = it.key, description = getDescription(it.key), iconResId = getIcon(it.key), quantity = it.value)
-        }.toMutableList()
+        val list = mutableListOf<QuoteVO>()
+        list.add(from(key = base, value = 1.0))
+        list.addAll(quotes.rates.map { from(key = it.key, value = it.value) })
+        adapter.models = list
+
+        firstSubscriber?.dispose()  // unsubscribe from source as list has been filled
+        secondSubscriber = source.subscribe(this::stateQuotesUpdated, Timber::e)
+    }
+
+    private fun stateQuotesUpdated(quotes: Quotes) {
+        adapter.apply {
+            models.forEach { quotes.rates[it.name]?.apply { it.quantity = this } }
+            notifyDataSetChanged()
+        }
     }
 }
