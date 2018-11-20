@@ -22,6 +22,9 @@ class QuotesActivity : BaseActivity() {
             addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
 
-        viewModel.start()
+        viewModel.apply {
+            setOnItemTopUp { rv_items.post { rv_items.scrollToPosition(0) } }  // scroll list to top position
+            start()  // start fetching data
+        }
     }
 }

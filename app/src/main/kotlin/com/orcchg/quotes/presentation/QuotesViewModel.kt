@@ -20,6 +20,7 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
         stateMultiplierUpdated(multiplier = 1.0)  // drop multiplier
         source = source()  // set new base to source
         resubscribe()
+        onItemTopUp?.invoke()
     }, topItemBound = {
         quantitySubscriber?.dispose()
         quantitySubscriber = QuotesViewHolder.quantityObservable?.subscribe(this::stateMultiplierUpdated, Timber::e)
@@ -34,6 +35,8 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
     private var secondSubscriber:   Disposable? = null
     private var quantitySubscriber: Disposable? = null
 
+    private var onItemTopUp: (() -> Unit)? = null
+
     override fun onCleared() {
         super.onCleared()
         clear()
@@ -41,6 +44,10 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
 
     fun start() {
         firstSubscriber = source.subscribe(this::stateQuotesLoaded, Timber::e)
+    }
+
+    fun setOnItemTopUp(l: (() -> Unit)?) {
+        onItemTopUp = l
     }
 
     /* Internal */
