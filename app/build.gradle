@@ -33,6 +33,7 @@ dependencies {
     def okHttp_version = "3.10.0"
     def retrofit_version = "2.4.0"
     def rxbinding_version = "3.0.0-alpha1"
+    def test_version = "1.1.0-alpha3"
 
     kapt "androidx.lifecycle:lifecycle-compiler:$lifecycle_version"
     kapt "com.google.dagger:dagger-compiler:$dagger_version"
@@ -67,6 +68,9 @@ dependencies {
 
     testImplementation 'junit:junit:4.12'
 
-    androidTestImplementation 'com.android.support.test:runner:1.0.2'
-    androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
+    androidTestImplementation "androidx.test:rules:$test_version"
+    androidTestImplementation "androidx.test:runner:$test_version"
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
+    androidTestImplementation 'com.squareup.retrofit2:retrofit-mock:2.0.0'
+    androidTestImplementation 'com.squareup.okhttp:mockwebserver:2.7.0'
 }
