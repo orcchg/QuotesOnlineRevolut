@@ -9,12 +9,14 @@ import com.orcchg.quotes.presentation.base.BaseActivity
 import kotlinx.android.synthetic.main.activity_quotes.*
 
 class QuotesActivity : BaseActivity() {
+    
+    private lateinit var viewModel: QuotesViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_quotes)
 
-        val viewModel = ViewModelProviders.of(this, vmFactory).get(QuotesViewModel::class.java)
+        viewModel = ViewModelProviders.of(this, vmFactory).get(QuotesViewModel::class.java)
 
         rv_items.apply {
             adapter = viewModel.adapter
@@ -26,5 +28,10 @@ class QuotesActivity : BaseActivity() {
             setOnItemTopUp { rv_items.post { rv_items.scrollToPosition(0) } }  // scroll list to top position
             start()  // start fetching data
         }
+    }
+    
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.setOnItemTopUp(null)
     }
 }
