@@ -18,6 +18,14 @@ class QuotesViewHolder(view: View, private val l: ((quote: QuoteVO) -> Unit)?,
     }
 
     fun bind(model: QuoteVO) {
+        val clickListener = View.OnClickListener {
+                itemView.et_quantity.apply {
+                    setSelection(et_quantity.text.length)
+                    requestFocus()
+                }
+                l?.invoke(model)
+        }
+
         itemView.apply {
             et_quantity.apply {
                 setText("${model.quantity * model.multiplier}")
@@ -27,17 +35,12 @@ class QuotesViewHolder(view: View, private val l: ((quote: QuoteVO) -> Unit)?,
                         .debounce(DEBOUNCE, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                     topItemBound?.invoke()
                 }
+                setOnClickListener(clickListener)
             }
             iv_icon.setImageResource(model.iconResId)
             tv_quote_description.setText(model.description)
             tv_quote_title.text = model.name
-            vg_root.setOnClickListener {
-                et_quantity.apply {
-                    setSelection(et_quantity.text.length)
-                    requestFocus()
-                }
-                l?.invoke(model)
-            }
+            vg_root.setOnClickListener(clickListener)
         }
     }
 }
