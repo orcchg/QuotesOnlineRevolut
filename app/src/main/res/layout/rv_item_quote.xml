@@ -52,6 +52,7 @@
         android:layout_height="wrap_content"
         android:hint="@string/quote_item_et_hint"
         android:inputType="numberDecimal"
+        android:maxLength="8"
         android:textColor="@color/primaryText"
         android:textSize="@dimen/std_text_size_large"
         app:layout_constraintTop_toTopOf="@id/iv_icon"
