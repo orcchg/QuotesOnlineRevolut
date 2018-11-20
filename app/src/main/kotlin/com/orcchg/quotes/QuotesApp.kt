@@ -4,6 +4,7 @@ import com.orcchg.quotes.di.ApplicationComponent
 import com.orcchg.quotes.di.DaggerApplicationComponent
 import dagger.android.AndroidInjector
 import dagger.android.DaggerApplication
+import timber.log.Timber
 
 class QuotesApp : DaggerApplication() {
 
@@ -21,5 +22,12 @@ class QuotesApp : DaggerApplication() {
 
     override fun onCreate() {
         super.onCreate()
+        if (BuildConfig.DEBUG) {
+            Timber.plant(object : Timber.DebugTree() {
+                override fun createStackElementTag(element: StackTraceElement): String {
+                    return packageName + ":" + super.createStackElementTag(element) + ":" + element.lineNumber
+                }
+            })
+        }
     }
 }
