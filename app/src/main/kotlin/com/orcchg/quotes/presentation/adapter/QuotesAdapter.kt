@@ -20,6 +20,10 @@ class QuotesAdapter(private val l: ((quote: QuoteVO) -> Unit)?, private val topI
             models.find { it.name == quote.name }?.also {
                 models.apply {
                     val oldPosition = indexOf(it)
+                    if (oldPosition <= 0) {
+                        return@apply  // no need to change top item
+                    }
+
                     it.quantity = 1.0  // top item should have '1.0' quantity and multiplier
                     it.multiplier = 1.0
                     removeAt(oldPosition)
