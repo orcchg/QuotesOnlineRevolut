@@ -2,9 +2,12 @@ package com.orcchg.quotes.data.di
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import com.google.gson.JsonDeserializer
 import com.orcchg.quotes.data.BASE_URL
 import com.orcchg.quotes.data.Cloud
 import com.orcchg.quotes.data.RestAdapter
+import com.orcchg.quotes.domain.Quotes
+import com.orcchg.quotes.domain.QuotesDeserializer
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -19,7 +22,14 @@ import javax.inject.Singleton
 class CloudModule {
 
     @Provides @Singleton
-    fun provideGson(): Gson = GsonBuilder().setDateFormat("yyyy-MM-dd").create()
+    fun provideDeserializer(): JsonDeserializer<Quotes> = QuotesDeserializer()
+
+    @Provides @Singleton
+    fun provideGson(deserializer: JsonDeserializer<Quotes>): Gson =
+        GsonBuilder()
+            .registerTypeAdapter(Quotes::class.java, deserializer)
+            .setDateFormat("yyyy-MM-dd")
+            .create()
 
     @Provides @Singleton
     fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor {
