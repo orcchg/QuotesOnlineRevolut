@@ -20,14 +20,12 @@ class QuotesViewHolder(view: View, private val l: ((quote: QuoteVO) -> Unit)?,
     fun bind(model: QuoteVO) {
         itemView.apply {
             et_quantity.apply {
+                setText("${model.quantity * model.multiplier}")
                 if (adapterPosition == 0) {
-                    setText("1.0")  // start from '1.0' quantity when item activated
                     quantityObservable = et_quantity.textChanges().skipInitialValue()
                         .map { if (it.isBlank()) 0.0 else it.toString().toDouble() }
                         .debounce(DEBOUNCE, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                     topItemBound?.invoke()
-                } else {
-                    setText("${model.quantity * model.multiplier}")
                 }
             }
             iv_icon.setImageResource(model.iconResId)

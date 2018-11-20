@@ -15,12 +15,12 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
 
     val adapter = QuotesAdapter(l = {
         base = it.name
-        stateQuantitiesUpdated(multiplier = 1.0)  // drop multiplier
+        stateMultiplierUpdated(multiplier = 1.0)  // drop multiplier
         source = source()  // set new base to source
         resubscribe()
     }, topItemBound = {
         quantitySubscriber?.dispose()
-        quantitySubscriber = QuotesViewHolder.quantityObservable?.subscribe(this::stateQuantitiesUpdated, Timber::e)
+        quantitySubscriber = QuotesViewHolder.quantityObservable?.subscribe(this::stateMultiplierUpdated, Timber::e)
     })
 
     private var base: String = "USD"  // initial base
@@ -79,7 +79,7 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
         }
     }
 
-    private fun stateQuantitiesUpdated(multiplier: Double) {
+    private fun stateMultiplierUpdated(multiplier: Double) {
         this.multiplier = multiplier
 
         adapter.apply {
