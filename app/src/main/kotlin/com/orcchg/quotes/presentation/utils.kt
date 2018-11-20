@@ -5,6 +5,8 @@ import androidx.annotation.StringRes
 import com.orcchg.quotes.R
 import com.orcchg.quotes.presentation.adapter.QuoteVO
 
+const val DEBOUNCE = 150L  // ms
+
 fun from(key: String, value: Double): QuoteVO =
     QuoteVO(name = key, description = getDescription(key), iconResId = getIcon(key), quantity = value)
 

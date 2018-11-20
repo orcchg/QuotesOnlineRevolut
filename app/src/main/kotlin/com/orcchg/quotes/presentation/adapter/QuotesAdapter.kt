@@ -5,7 +5,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.orcchg.quotes.R
 
-class QuotesAdapter(private val l: ((quote: QuoteVO) -> Unit)?) : RecyclerView.Adapter<QuotesViewHolder>() {
+class QuotesAdapter(private val l: ((quote: QuoteVO) -> Unit)?, private val topItemBound: (() -> Unit)?)
+    : RecyclerView.Adapter<QuotesViewHolder>() {
 
     var models: MutableList<QuoteVO> = mutableListOf()
         set (value) {
@@ -25,7 +26,7 @@ class QuotesAdapter(private val l: ((quote: QuoteVO) -> Unit)?) : RecyclerView.A
                 }
             }
             l?.invoke(quote)
-        })
+        }, topItemBound = topItemBound)
     }
 
     override fun onBindViewHolder(holder: QuotesViewHolder, position: Int) {

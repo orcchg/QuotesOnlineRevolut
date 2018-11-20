@@ -5,6 +5,7 @@ import com.orcchg.quotes.data.Cloud
 import com.orcchg.quotes.domain.Quotes
 import com.orcchg.quotes.presentation.adapter.QuoteVO
 import com.orcchg.quotes.presentation.adapter.QuotesAdapter
+import com.orcchg.quotes.presentation.adapter.QuotesViewHolder
 import io.reactivex.disposables.Disposable
 import io.reactivex.flowables.ConnectableFlowable
 import timber.log.Timber
@@ -12,17 +13,22 @@ import java.util.concurrent.TimeUnit
 
 class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
 
-    val adapter = QuotesAdapter {
+    val adapter = QuotesAdapter(l = {
         base = it.name
-        source = source()  // set new base
-        secondSubscriber?.dispose()
-        secondSubscriber = source.subscribe(this::stateQuotesUpdated, Timber::e)
-    }
+        stateQuantitiesUpdated(multiplier = 1.0)  // drop multiplier
+        source = source()  // set new base to source
+        resubscribe()
+    }, topItemBound = {
+        quantitySubscriber?.dispose()
+        quantitySubscriber = QuotesViewHolder.quantityObservable?.subscribe(this::stateQuantitiesUpdated, Timber::e)
+    })
 
     private var base: String = "USD"  // initial base
+    private var multiplier: Double = 1.0
     private var source: ConnectableFlowable<Quotes> = source()
-    private var firstSubscriber:  Disposable? = null
-    private var secondSubscriber: Disposable? = null
+    private var firstSubscriber:    Disposable? = null
+    private var secondSubscriber:   Disposable? = null
+    private var quantitySubscriber: Disposable? = null
 
     override fun onCleared() {
         super.onCleared()
@@ -38,12 +44,21 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
     private fun clear() {
         firstSubscriber?.dispose()
         secondSubscriber?.dispose()
+        quantitySubscriber?.dispose()
     }
 
     private fun source(): ConnectableFlowable<Quotes> {
         val source = cloud.quotes(base).repeatWhen { it.delay(1, TimeUnit.SECONDS) }.publish()
         source.connect()
         return source
+    }
+
+    /**
+     * Subscribes on hot observable with quotes and on quantity changes
+     */
+    private fun resubscribe() {
+        secondSubscriber?.dispose()
+        secondSubscriber = source.subscribe(this::stateQuotesUpdated, Timber::e)
     }
 
     // ------------------------------------------
@@ -54,13 +69,24 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
         adapter.models = list
 
         firstSubscriber?.dispose()  // unsubscribe from source as list has been filled
-        secondSubscriber = source.subscribe(this::stateQuotesUpdated, Timber::e)
+        resubscribe()
     }
 
     private fun stateQuotesUpdated(quotes: Quotes) {
         adapter.apply {
-            models.forEach { quotes.rates[it.name]?.apply { it.quantity = this } }
-            notifyDataSetChanged()
+            models.forEach { quotes.rates[it.name]?.apply { it.quantity = this; it.multiplier = multiplier } }
+            notifyItemRangeChanged(1, models.size - 1)
+        }
+    }
+
+    private fun stateQuantitiesUpdated(multiplier: Double) {
+        this.multiplier = multiplier
+
+        adapter.apply {
+            for (i in 1 until models.size) {
+                models[i].multiplier = multiplier
+            }
+            notifyItemRangeChanged(1, models.size - 1)
         }
     }
 }
