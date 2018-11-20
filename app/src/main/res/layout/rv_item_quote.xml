@@ -3,8 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/vg_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="?selectableItemBackground"
     android:minHeight="@dimen/quote_item_height"
     android:paddingStart="@dimen/quote_item_padding"
     android:paddingEnd="@dimen/quote_item_padding">
@@ -52,6 +54,7 @@
         android:inputType="numberDecimal"
         android:textColor="@color/primaryText"
         android:textSize="@dimen/std_text_size_large"
+        app:layout_constraintTop_toTopOf="@id/iv_icon"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBaseline_toBaselineOf="@id/tv_quote_description"/>
+        app:layout_constraintBottom_toBottomOf="@id/iv_icon"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.orcchg.quotes.presentation
 
 import android.os.Bundle
 import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orcchg.quotes.R
 import com.orcchg.quotes.presentation.base.BaseActivity
@@ -18,6 +19,7 @@ class QuotesActivity : BaseActivity() {
         rv_items.apply {
             adapter = viewModel.adapter
             layoutManager = LinearLayoutManager(context)
+            addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         }
 
         viewModel.quotes()
