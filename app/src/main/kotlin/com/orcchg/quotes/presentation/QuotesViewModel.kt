@@ -1,5 +1,7 @@
 package com.orcchg.quotes.presentation
 
+import android.os.Handler
+import android.os.Looper
 import androidx.lifecycle.ViewModel
 import com.orcchg.quotes.data.Cloud
 import com.orcchg.quotes.domain.Quotes
@@ -22,6 +24,8 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
         quantitySubscriber?.dispose()
         quantitySubscriber = QuotesViewHolder.quantityObservable?.subscribe(this::stateMultiplierUpdated, Timber::e)
     })
+
+    private val handler = Handler(Looper.getMainLooper())
 
     private var base: String = "USD"  // initial base
     private var multiplier: Double = 1.0
@@ -75,7 +79,7 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
     private fun stateQuotesUpdated(quotes: Quotes) {
         adapter.apply {
             models.forEach { quotes.rates[it.name]?.apply { it.quantity = this; it.multiplier = multiplier } }
-            notifyItemRangeChanged(1, models.size - 1)
+            handler.post { notifyItemRangeChanged(1, models.size - 1) }
         }
     }
 
