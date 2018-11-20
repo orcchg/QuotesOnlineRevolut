@@ -73,7 +73,7 @@ fun getIcon(key: String): Int =
         "RON" -> R.drawable.ic_country_flag_ro
         "RUB" -> R.drawable.ic_country_flag_ru
         "SEK" -> R.drawable.ic_country_flag_se
-        "SGB" -> R.drawable.ic_country_flag_sg
+        "SGD" -> R.drawable.ic_country_flag_sg
         "THB" -> R.drawable.ic_country_flag_th
         "TRY" -> R.drawable.ic_country_flag_tr
         "ZAR" -> R.drawable.ic_country_flag_za
