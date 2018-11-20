@@ -19,5 +19,7 @@ class QuotesActivity : BaseActivity() {
             adapter = viewModel.adapter
             layoutManager = LinearLayoutManager(context)
         }
+
+        viewModel.quotes()
     }
 }

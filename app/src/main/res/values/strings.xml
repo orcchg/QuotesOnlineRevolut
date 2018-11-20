@@ -2,4 +2,38 @@
     <string name="app_name">Quotes Online Revolut</string>
 
     <string name="quote_item_et_hint">0</string>
+
+    <string name="description_aud">Australian Dollar</string>
+    <string name="description_bgn">Bulgarian Lev</string>
+    <string name="description_brl">Brazilian Real</string>
+    <string name="description_cad">Canadian Dollar</string>
+    <string name="description_chf">Swiss Franc</string>
+    <string name="description_cny">Chinese Yuan</string>
+    <string name="description_czk">Czech Koruna</string>
+    <string name="description_dkk">Danish Krone</string>
+    <string name="description_gbp">British Pound</string>
+    <string name="description_hkd">Hong Kong Dollar</string>
+    <string name="description_hrk">Croatian Kuna</string>
+    <string name="description_huf">Hungarian Forint</string>
+    <string name="description_idr">Indonesian Rupiah</string>
+    <string name="description_ils">Israeli Shekel</string>
+    <string name="description_inr">Indian Rupee</string>
+    <string name="description_isk">Icelandic Króna</string>
+    <string name="description_jpy">Japanese Yen</string>
+    <string name="description_krw">South Korean Won</string>
+    <string name="description_mxn">Mexican Peso</string>
+    <string name="description_myr">Malaysian Ringgit</string>
+    <string name="description_nok">Norwegian Krone</string>
+    <string name="description_nzd">New Zealand Dollar</string>
+    <string name="description_php">Philippine Peso</string>
+    <string name="description_pln">Poland złoty</string>
+    <string name="description_ron">Romanian Leu</string>
+    <string name="description_rub">Russian Rouble</string>
+    <string name="description_sek">Swedish Krona</string>
+    <string name="description_sgd">Singapore Dollar</string>
+    <string name="description_thb">Thai Baht</string>
+    <string name="description_try">Turkish Lira</string>
+    <string name="description_zar">South African Rand</string>
+    <string name="description_eur">Euro</string>
+    <string name="description_usd">U.S. Dollar</string>
 </resources>

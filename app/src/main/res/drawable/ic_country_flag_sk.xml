@@ -1,0 +1,13 @@
+<vector android:height="20dp" android:viewportHeight="20"
+    android:viewportWidth="28" android:width="28dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#00000000" android:fillType="evenOdd"
+        android:pathData="M2.25,0.25L25.75,0.25A2,2 0,0 1,27.75 2.25L27.75,17.75A2,2 0,0 1,25.75 19.75L2.25,19.75A2,2 0,0 1,0.25 17.75L0.25,2.25A2,2 0,0 1,2.25 0.25z"
+        android:strokeColor="#F5F5F5" android:strokeWidth=".5"/>
+    <path android:fillColor="#0C47B7" android:fillType="evenOdd" android:pathData="M0,6.667h28v6.667H0z"/>
+    <path android:fillColor="#E53B35" android:fillType="evenOdd" android:pathData="M0,13.333h28V20H0z"/>
+    <path android:fillColor="#00000000" android:fillType="evenOdd"
+        android:pathData="M4.949,5.31A2.064,2.064 0,0 1,7.002 3.333h5.996c1.097,0 2.011,0.88 2.053,1.977l0.23,5.996c0.037,0.943 -0.475,2.12 -1.193,2.735l-2.139,1.833c-1.086,0.931 -2.811,0.931 -3.898,0l-2.139,-1.833C5.198,13.428 4.682,12.248 4.719,11.306l0.23,-5.996z"
+        android:strokeColor="#FFF" android:strokeWidth="1.333"/>
+    <path android:fillColor="#FFF" android:fillType="evenOdd" android:pathData="M9.334,10.994a0.335,0.335 0,0 0,-0.33 -0.327h-1.34a0.328,0.328 0,0 1,-0.33 -0.337v-0.66a0.34,0.34 0,0 1,0.33 -0.337h1.34c0.182,0 0.33,-0.142 0.33,-0.336v-0.66A0.331,0.331 0,0 0,8.997 8h-0.66a0.331,0.331 0,0 1,-0.337 -0.336v-0.66c0,-0.187 0.143,-0.337 0.337,-0.337h0.66a0.331,0.331 0,0 0,0.337 -0.337v-0.66c0,-0.186 0.142,-0.337 0.336,-0.337h0.66c0.186,0 0.337,0.143 0.337,0.337v0.66c0,0.186 0.143,0.337 0.336,0.337h0.66c0.187,0 0.337,0.142 0.337,0.336v0.66A0.331,0.331 0,0 1,11.664 8h-0.66A0.331,0.331 0,0 0,10.667 8.336v0.66a0.34,0.34 0,0 0,0.33 0.337h1.34c0.182,0 0.33,0.143 0.33,0.337v0.66a0.34,0.34 0,0 1,-0.33 0.337L10.997,10.667a0.327,0.327 0,0 0,-0.33 0.327v2.012c0,0.18 -0.143,0.327 -0.336,0.327h-0.66a0.33,0.33 0,0 1,-0.337 -0.327L9.334,10.994z"/>
+    <path android:fillColor="#1251A1" android:fillType="evenOdd" android:pathData="M8.797,13.425a1.333,1.333 0,0 1,2.407 0c1.62,0.256 2.796,1.013 2.796,1.908 0,1.105 -1.79,2 -4,2 -2.209,0 -4,-0.895 -4,-2 0,-0.895 1.176,-1.652 2.797,-1.908z"/>
+</vector>

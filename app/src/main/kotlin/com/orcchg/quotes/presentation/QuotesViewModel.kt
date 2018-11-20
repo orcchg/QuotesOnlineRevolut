@@ -3,6 +3,7 @@ package com.orcchg.quotes.presentation
 import androidx.lifecycle.ViewModel
 import com.orcchg.quotes.data.Cloud
 import com.orcchg.quotes.domain.Quotes
+import com.orcchg.quotes.presentation.adapter.QuoteVO
 import com.orcchg.quotes.presentation.adapter.QuotesAdapter
 import io.reactivex.disposables.Disposable
 import timber.log.Timber
@@ -27,6 +28,8 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
     }
 
     private fun stateQuotesLoaded(quotes: Quotes) {
-//        adapter.models = quotes.rates.map {}
+        adapter.models = quotes.rates.map {
+            QuoteVO(name = it.key, description = getDescription(it.key), iconResId = getIcon(it.key), quantity = it.value)
+        }
     }
 }

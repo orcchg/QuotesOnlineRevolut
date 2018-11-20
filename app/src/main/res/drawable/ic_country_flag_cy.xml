@@ -1,0 +1,18 @@
+<vector android:height="20dp" android:viewportHeight="20"
+    android:viewportWidth="28" android:width="28dp" xmlns:android="http://schemas.android.com/apk/res/android">
+    <path android:fillColor="#00000000" android:fillType="evenOdd"
+        android:pathData="M2.25,0.25L25.75,0.25A2,2 0,0 1,27.75 2.25L27.75,17.75A2,2 0,0 1,25.75 19.75L2.25,19.75A2,2 0,0 1,0.25 17.75L0.25,2.25A2,2 0,0 1,2.25 0.25z"
+        android:strokeColor="#F5F5F5" android:strokeWidth=".5"/>
+    <path android:fillColor="#E7832C" android:fillType="evenOdd" android:pathData="M20.73,2.969c0.333,-0.167 0.44,-0.057 0.239,0.244l-0.605,0.907c-0.2,0.302 -0.61,0.71 -0.91,0.911l-0.907,0.605a8.038,8.038 0,0 0,-1.017 0.834l0.274,-0.274a0.662,0.662 0,0 0,-0.004 0.937l0.4,0.4a0.66,0.66 0,0 1,0 0.933l-0.4,0.401c-0.258,0.258 -0.736,0.331 -1.07,0.164l-0.126,-0.062a0.675,0.675 0,0 0,-0.906 0.302l-0.063,0.125c-0.166,0.333 -0.58,0.697 -0.934,0.815l-0.735,0.245c-0.35,0.116 -0.929,0.21 -1.3,0.21 -0.368,0 -0.8,0.27 -0.968,0.605l-0.063,0.125a0.67,0.67 0,0 1,-0.893 0.308l-1.484,-0.741A4.868,4.868 0,0 1,8.2 10.2l-0.4,-0.4c-0.258,-0.258 -0.467,-0.763 -0.467,-1.133C7.333,8.298 7.635,8 8,8h-0.667c0.369,0 0.875,-0.208 1.133,-0.466l0.401,-0.401c0.258,-0.258 0.762,-0.466 1.133,-0.466a0.98,0.98 0,0 0,0.878 -0.633l0.244,-0.735a0.77,0.77 0,0 1,0.87 -0.5l2.016,0.403c0.364,0.072 0.944,0.06 1.304,-0.03l1.376,-0.344c0.356,-0.09 0.915,-0.296 1.25,-0.463l0.124,-0.063 1.209,-0.604 0.125,-0.063 1.208,-0.604 0.125,-0.062z"/>
+    <path android:fillColor="#445128" android:fillType="evenOdd" android:pathData="M14,15.333m-1,0a1,1 0,1 1,2 0a1,1 0,1 1,-2 0"/>
+    <path android:fillAlpha="0.75" android:fillColor="#00000000"
+        android:fillType="evenOdd"
+        android:pathData="M16,14.667s2,-0.667 2.667,-2"
+        android:strokeAlpha="0.75" android:strokeColor="#445128"
+        android:strokeLineCap="round" android:strokeWidth="1.333"/>
+    <path android:fillAlpha="0.75" android:fillColor="#00000000"
+        android:fillType="evenOdd"
+        android:pathData="M12,14.667s-2,-0.667 -2.667,-2"
+        android:strokeAlpha="0.75" android:strokeColor="#445128"
+        android:strokeLineCap="round" android:strokeWidth="1.333"/>
+</vector>
