@@ -10,7 +10,7 @@ import timber.log.Timber
 
 class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
 
-    val adapter = QuotesAdapter()
+    val adapter = QuotesAdapter {}
     private var disposable: Disposable? = null
 
     override fun onCleared() {
@@ -30,6 +30,6 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
     private fun stateQuotesLoaded(quotes: Quotes) {
         adapter.models = quotes.rates.map {
             QuoteVO(name = it.key, description = getDescription(it.key), iconResId = getIcon(it.key), quantity = it.value)
-        }
+        }.toMutableList()
     }
 }
