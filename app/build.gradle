@@ -9,8 +9,8 @@ android {
         applicationId "com.orcchg.quotes"
         minSdkVersion 21
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.0.2"
+        versionCode 4
+        versionName "1.0.$versionCode"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
     buildTypes {
@@ -73,4 +73,14 @@ dependencies {
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.1.0'
     androidTestImplementation 'com.squareup.retrofit2:retrofit-mock:2.0.0'
     androidTestImplementation 'com.squareup.okhttp:mockwebserver:2.7.0'
+}
+
+android.applicationVariants.all { variant ->
+    def flavor = variant.mergedFlavor
+    variant.outputs.all { output ->
+        def flavorName = variant.name.replace("Release", "")
+        def name = flavorName + "-" + flavor.versionName + "-b" + flavor.versionCode
+        name = name + ".apk"
+        outputFileName = name
+    }
 }
