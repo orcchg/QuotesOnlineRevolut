@@ -41,6 +41,7 @@ class QuotesAdapter(private val l: ((quote: QuoteVO) -> Unit)?) : RecyclerView.A
                 quantityObservable = textChanges().skipInitialValue()
                     .debounce(DEBOUNCE, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                     .map { if (it.isBlank()) 0.0 else it.toString().toDouble() }
+                    .doOnNext { models[0].multiplier = it }
             }
             else -> view.et_quantity.textChanges().ignoreElements()
         }
@@ -60,9 +61,10 @@ class QuotesAdapter(private val l: ((quote: QuoteVO) -> Unit)?) : RecyclerView.A
                     add(0, it)
                     notifyItemMoved(oldPosition, 0)  // move item to top position
                     notifyItemChanged(0)
+
+                    l?.invoke(quote)
                 }
             }
-            l?.invoke(quote)
         })
     }
 
