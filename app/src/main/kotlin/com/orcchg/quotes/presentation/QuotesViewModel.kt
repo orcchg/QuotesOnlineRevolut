@@ -1,8 +1,5 @@
 package com.orcchg.quotes.presentation
 
-import android.os.Handler
-import android.os.Looper
-import android.text.method.TextKeyListener.clear
 import androidx.lifecycle.ViewModel
 import com.orcchg.quotes.data.Cloud
 import com.orcchg.quotes.domain.Quotes
