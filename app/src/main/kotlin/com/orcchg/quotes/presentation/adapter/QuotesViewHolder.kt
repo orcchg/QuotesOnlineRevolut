@@ -31,9 +31,9 @@ class QuotesViewHolder(view: View, private val l: ((quote: QuoteVO) -> Unit)?) :
                 setText("${model.quantity * model.multiplier}")
                 if (adapterPosition == 0) {
                     quantityObservable = et_quantity.textChanges().skipInitialValue()
+                        .debounce(DEBOUNCE, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                         .skipWhile { et_quantity.tag as Int != 0 }
                         .map { if (it.isBlank()) 0.0 else it.toString().toDouble() }
-                        .debounce(DEBOUNCE, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
                 }
                 setOnClickListener(clickListener)
             }
