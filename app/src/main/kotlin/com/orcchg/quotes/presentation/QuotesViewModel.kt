@@ -8,6 +8,7 @@ import com.orcchg.quotes.presentation.adapter.QuotesAdapter
 import com.orcchg.quotes.presentation.adapter.QuotesViewHolder
 import io.reactivex.disposables.Disposable
 import io.reactivex.flowables.ConnectableFlowable
+import io.reactivex.subjects.BehaviorSubject
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
@@ -18,7 +19,7 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
         stateMultiplierUpdated(multiplier = 1.0)  // drop multiplier
         source = source()  // set new base to source
         resubscribe()
-        onItemTopUp?.invoke()
+        topUp.onNext(true)
     }, topItemBound = {
         quantitySubscriber?.dispose()
         quantitySubscriber = QuotesViewHolder.quantityObservable?.subscribe(this::stateMultiplierUpdated, Timber::e)
@@ -32,8 +33,10 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
     private var secondSubscriber:   Disposable? = null
     private var quantitySubscriber: Disposable? = null
 
-    private var onItemTopUp: (() -> Unit)? = null
     private var isAnimatingListener: (() -> Boolean)? = null
+
+    var topUp: BehaviorSubject<Boolean> = BehaviorSubject.create()
+        private set
 
     override fun onCleared() {
         super.onCleared()
@@ -42,10 +45,6 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
 
     fun start() {
         firstSubscriber = source.subscribe(this::stateQuotesLoaded, Timber::e)
-    }
-
-    fun setOnItemTopUp(l: (() -> Unit)?) {
-        onItemTopUp = l
     }
 
     fun setIsAnimatingListener(l: (() -> Boolean)?) {
@@ -58,6 +57,7 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
         firstSubscriber?.dispose()
         secondSubscriber?.dispose()
         quantitySubscriber?.dispose()
+        topUp.onComplete()
     }
 
     private fun source(): ConnectableFlowable<Quotes> {

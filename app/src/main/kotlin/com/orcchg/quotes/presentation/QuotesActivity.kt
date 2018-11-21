@@ -25,7 +25,7 @@ class QuotesActivity : BaseActivity() {
         }
 
         viewModel.apply {
-            setOnItemTopUp { rv_items.post { rv_items.scrollToPosition(0) } }  // scroll list to top position
+            topUp.subscribe { rv_items.post { rv_items.scrollToPosition(0) } }  // scroll list to top position
             setIsAnimatingListener { rv_items.isAnimating }
             start()  // start fetching data
         }
@@ -33,9 +33,6 @@ class QuotesActivity : BaseActivity() {
     
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.apply {
-            setOnItemTopUp(null)
-            setIsAnimatingListener(null)
-        }
+        viewModel.setIsAnimatingListener(null)
     }
 }
