@@ -2,6 +2,7 @@ package com.orcchg.quotes.presentation
 
 import android.os.Handler
 import android.os.Looper
+import android.text.method.TextKeyListener.clear
 import androidx.lifecycle.ViewModel
 import com.orcchg.quotes.data.Cloud
 import com.orcchg.quotes.domain.Quotes
@@ -26,8 +27,6 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
         quantitySubscriber = QuotesViewHolder.quantityObservable?.subscribe(this::stateMultiplierUpdated, Timber::e)
     })
 
-    private val handler = Handler(Looper.getMainLooper())
-
     private var base: String = "USD"  // initial base
     private var multiplier: Double = 1.0
 
@@ -37,6 +36,7 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
     private var quantitySubscriber: Disposable? = null
 
     private var onItemTopUp: (() -> Unit)? = null
+    private var isAnimatingListener: (() -> Boolean)? = null
 
     override fun onCleared() {
         super.onCleared()
@@ -49,6 +49,10 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
 
     fun setOnItemTopUp(l: (() -> Unit)?) {
         onItemTopUp = l
+    }
+
+    fun setIsAnimatingListener(l: (() -> Boolean)?) {
+        isAnimatingListener = l
     }
 
     /* Internal */
@@ -87,7 +91,9 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
     private fun stateQuotesUpdated(quotes: Quotes) {
         adapter.apply {
             models.forEach { quotes.rates[it.name]?.apply { it.quantity = this; it.multiplier = multiplier } }
-            handler.post { notifyItemRangeChanged(1, models.size - 1) }
+            if (isAnimatingListener?.invoke() != true) {
+                notifyItemRangeChanged(1, models.size - 1)
+            }
         }
     }
 

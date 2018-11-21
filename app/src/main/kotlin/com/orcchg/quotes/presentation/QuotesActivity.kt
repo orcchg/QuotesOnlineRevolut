@@ -26,12 +26,16 @@ class QuotesActivity : BaseActivity() {
 
         viewModel.apply {
             setOnItemTopUp { rv_items.post { rv_items.scrollToPosition(0) } }  // scroll list to top position
+            setIsAnimatingListener { rv_items.isAnimating }
             start()  // start fetching data
         }
     }
     
     override fun onDestroy() {
         super.onDestroy()
-        viewModel.setOnItemTopUp(null)
+        viewModel.apply {
+            setOnItemTopUp(null)
+            setIsAnimatingListener(null)
+        }
     }
 }
