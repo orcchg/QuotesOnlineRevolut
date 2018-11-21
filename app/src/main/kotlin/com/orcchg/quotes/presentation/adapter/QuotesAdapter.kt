@@ -1,6 +1,7 @@
 package com.orcchg.quotes.presentation.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding3.widget.textChanges
@@ -37,15 +38,8 @@ class QuotesAdapter(private val l: ((quote: QuoteVO) -> Unit)?) : RecyclerView.A
         val view = LayoutInflater.from(parent.context).inflate(R.layout.rv_item_quote, parent, false)
 
         when (viewType) {
-            VIEW_TYPE_TOP -> view.et_quantity.apply {
-                quantityObservable = textChanges().skipInitialValue()
-                    .debounce(DEBOUNCE, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
-                    .map { if (it.isBlank()) 0.0 else it.toString().toDouble() }
-                    .doOnNext { models[0].multiplier = it }
-            }
-            else -> view.et_quantity.textChanges().ignoreElements()
+            VIEW_TYPE_TOP -> initQuantitySource(view)
         }
-
 
         return QuotesViewHolder(view, l = { quote: QuoteVO ->
             models.find { it.name == quote.name }?.also {
@@ -61,7 +55,6 @@ class QuotesAdapter(private val l: ((quote: QuoteVO) -> Unit)?) : RecyclerView.A
                     add(0, it)
                     notifyItemMoved(oldPosition, 0)  // move item to top position
                     notifyItemChanged(0)
-
                     l?.invoke(quote)
                 }
             }
@@ -70,7 +63,10 @@ class QuotesAdapter(private val l: ((quote: QuoteVO) -> Unit)?) : RecyclerView.A
 
     override fun onBindViewHolder(holder: QuotesViewHolder, position: Int) {
         holder.bind(model = models[position])
-        if (position == 0) topItemBound?.invoke()
+        if (position == 0) {
+            initQuantitySource(holder.itemView)
+            topItemBound?.invoke()
+        }
     }
 
     override fun getItemCount(): Int = models.size
@@ -80,4 +76,15 @@ class QuotesAdapter(private val l: ((quote: QuoteVO) -> Unit)?) : RecyclerView.A
                 0 -> VIEW_TYPE_TOP
                 else -> VIEW_TYPE_NORMAL
             }
+
+    /* Internal */
+    // --------------------------------------------------------------------------------------------
+    private fun initQuantitySource(view: View) {
+        view.et_quantity.apply {
+            quantityObservable = textChanges()
+                .debounce(DEBOUNCE, TimeUnit.MILLISECONDS, AndroidSchedulers.mainThread())
+                .map { if (it.isBlank()) 0.0 else it.toString().toDouble() }
+                .doOnNext { models[0].multiplier = it }
+        }
+    }
 }
