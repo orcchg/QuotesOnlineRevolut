@@ -5,7 +5,6 @@ import com.orcchg.quotes.data.Cloud
 import com.orcchg.quotes.domain.Quotes
 import com.orcchg.quotes.presentation.adapter.QuoteVO
 import com.orcchg.quotes.presentation.adapter.QuotesAdapter
-import com.orcchg.quotes.presentation.adapter.QuotesViewHolder
 import io.reactivex.disposables.Disposable
 import io.reactivex.flowables.ConnectableFlowable
 import io.reactivex.subjects.BehaviorSubject
@@ -14,16 +13,21 @@ import java.util.concurrent.TimeUnit
 
 class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
 
-    val adapter = QuotesAdapter(l = {
-        base = it.name
-        stateMultiplierUpdated(multiplier = 1.0)  // drop multiplier
-        source = source()  // set new base to source
-        resubscribe()
-        topUp.onNext(true)
-    }, topItemBound = {
-        quantitySubscriber?.dispose()
-        quantitySubscriber = QuotesViewHolder.quantityObservable?.subscribe(this::stateMultiplierUpdated, Timber::e)
-    })
+    val adapter: QuotesAdapter
+
+    init {
+        adapter = QuotesAdapter {
+            base = it.name
+            stateMultiplierUpdated(multiplier = 1.0)  // drop multiplier
+            source = source()  // set new base to source
+            resubscribe()
+            topUp.onNext(true)
+        }
+        adapter.setOnTopItemBound {
+            quantitySubscriber?.dispose()
+            quantitySubscriber = adapter.quantityObservable?.subscribe(this::stateMultiplierUpdated, Timber::e)
+        }
+    }
 
     private var base: String = "USD"  // initial base
     private var multiplier: Double = 1.0
@@ -54,6 +58,7 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
     /* Internal */
     // --------------------------------------------------------------------------------------------
     private fun clear() {
+        adapter.setOnTopItemBound(null)
         firstSubscriber?.dispose()
         secondSubscriber?.dispose()
         quantitySubscriber?.dispose()
