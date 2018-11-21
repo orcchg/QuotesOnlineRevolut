@@ -6,11 +6,13 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.orcchg.quotes.R
 import com.orcchg.quotes.presentation.base.BaseActivity
+import io.reactivex.disposables.Disposable
 import kotlinx.android.synthetic.main.activity_quotes.*
 
 class QuotesActivity : BaseActivity() {
     
     private lateinit var viewModel: QuotesViewModel
+    private var topUpSubscriber: Disposable? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,7 +27,7 @@ class QuotesActivity : BaseActivity() {
         }
 
         viewModel.apply {
-            topUp.subscribe { rv_items.post { rv_items.scrollToPosition(0) } }  // scroll list to top position
+            topUpSubscriber = topUp.subscribe { rv_items.post { rv_items.scrollToPosition(0) } }  // scroll list to top position
             setIsAnimatingListener { rv_items.isAnimating }
             start()  // start fetching data
         }
@@ -34,5 +36,6 @@ class QuotesActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         viewModel.setIsAnimatingListener(null)
+        topUpSubscriber?.dispose()
     }
 }
