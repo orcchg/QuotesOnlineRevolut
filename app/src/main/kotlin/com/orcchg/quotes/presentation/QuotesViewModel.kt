@@ -68,9 +68,7 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
                                 it.multiplier = models[9].multiplier
                             }
                         }
-                        if (isAnimatingListener?.invoke() != true) {
-                            notifyItemRangeChanged(1, models.size - 1)
-                        }
+                        notifyItemsChanged()
                     }
                 }
             }, Timber::e)
@@ -78,13 +76,20 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
 
     private fun subscribeQuantityUpdates() {
         quantitySubscriber?.dispose()
-        quantitySubscriber = adapter.quantityObservable?.subscribe({ multiplier ->
-            adapter.apply {
-                for (i in 1 until models.size) {
-                    models[i].multiplier = multiplier
+        quantitySubscriber = adapter.quantityObservable
+            ?.subscribe({ multiplier ->
+                adapter.apply {
+                    for (i in 1 until models.size) {
+                        models[i].multiplier = multiplier
+                    }
+                    notifyItemsChanged()
                 }
-                notifyItemRangeChanged(1, models.size - 1)
-            }
-        }, Timber::e)
+            }, Timber::e)
+    }
+
+    private fun notifyItemsChanged() {
+        if (isAnimatingListener?.invoke() != true) {
+            adapter.notifyItemRangeChanged(1, adapter.models.size - 1)
+        }
     }
 }
