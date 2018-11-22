@@ -55,10 +55,10 @@ class QuotesAdapter : RecyclerView.Adapter<QuotesViewHolder>() {
 
                     it.quantity = 1.0  // top item should have '1.0' quantity and multiplier
                     it.multiplier = 1.0
+                    notifyItemChanged(oldPosition)
                     removeAt(oldPosition)
                     add(0, it)
                     notifyItemMoved(oldPosition, 0)  // move item to top position
-                    notifyItemChanged(0)
                 }
             }
         })
