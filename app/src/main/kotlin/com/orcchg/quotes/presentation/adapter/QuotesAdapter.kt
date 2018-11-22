@@ -20,6 +20,10 @@ class QuotesAdapter : RecyclerView.Adapter<QuotesViewHolder>() {
         const val VIEW_TYPE_TOP = 1
     }
 
+    init {
+        setHasStableIds(true)
+    }
+
     var models: MutableList<QuoteVO> = mutableListOf()
         set (value) {
             val diff = DiffUtil.calculateDiff(QuotesDiffCallback(old = field, new = value))

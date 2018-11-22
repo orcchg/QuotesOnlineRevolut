@@ -15,7 +15,6 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
 
     init {
         adapter.apply {
-            setHasStableIds(true)
             setOnTopItemBound {
                 subscribeWithBase(base = it.name)
                 subscribeQuantityUpdates()
