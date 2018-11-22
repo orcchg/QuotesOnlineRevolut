@@ -3,6 +3,7 @@ package com.orcchg.quotes.presentation.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.jakewharton.rxbinding3.widget.textChanges
 import com.orcchg.quotes.R
@@ -12,7 +13,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.rv_item_quote.view.*
 import java.util.concurrent.TimeUnit
 
-class QuotesAdapter(private val l: ((quote: QuoteVO) -> Unit)?) : RecyclerView.Adapter<QuotesViewHolder>() {
+class QuotesAdapter : RecyclerView.Adapter<QuotesViewHolder>() {
 
     companion object {
         const val VIEW_TYPE_NORMAL = 0
@@ -21,19 +22,22 @@ class QuotesAdapter(private val l: ((quote: QuoteVO) -> Unit)?) : RecyclerView.A
 
     var models: MutableList<QuoteVO> = mutableListOf()
         set (value) {
+            val diff = DiffUtil.calculateDiff(QuotesDiffCallback(old = field, new = value))
             field = value
-            notifyDataSetChanged()
+            diff.dispatchUpdatesTo(this)
         }
 
-    private var topItemBound: (() -> Unit)? = null
+    private var topItemBound: ((item: QuoteVO) -> Unit)? = null
 
     var quantityObservable: Observable<Double>? = null
         private set
 
-    fun setOnTopItemBound(topItemBound: (() -> Unit)?) {
+    fun setOnTopItemBound(topItemBound: ((item: QuoteVO) -> Unit)?) {
         this.topItemBound = topItemBound
     }
 
+    /* Adapter */
+    // --------------------------------------------------------------------------------------------
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): QuotesViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.rv_item_quote, parent, false)
 
@@ -55,7 +59,6 @@ class QuotesAdapter(private val l: ((quote: QuoteVO) -> Unit)?) : RecyclerView.A
                     add(0, it)
                     notifyItemMoved(oldPosition, 0)  // move item to top position
                     notifyItemChanged(0)
-                    l?.invoke(quote)
                 }
             }
         })
@@ -65,9 +68,11 @@ class QuotesAdapter(private val l: ((quote: QuoteVO) -> Unit)?) : RecyclerView.A
         holder.bind(model = models[position])
         if (position == 0) {
             initQuantitySource(holder.itemView)
-            topItemBound?.invoke()
+            topItemBound?.invoke(models[position])
         }
     }
+
+    override fun getItemId(position: Int): Long = models[position].id()
 
     override fun getItemCount(): Int = models.size
 

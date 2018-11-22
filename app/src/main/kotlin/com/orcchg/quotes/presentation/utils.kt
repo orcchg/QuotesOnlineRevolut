@@ -7,8 +7,9 @@ import com.orcchg.quotes.presentation.adapter.QuoteVO
 
 const val DEBOUNCE = 150L  // ms
 
-fun from(key: String, value: Double): QuoteVO =
-    QuoteVO(name = key, description = getDescription(key), iconResId = getIcon(key), quantity = value)
+fun from(name: String, quantity: Double, multiplier: Double = 1.0): QuoteVO =
+    QuoteVO(name = name, description = getDescription(name), iconResId = getIcon(name),
+            quantity = quantity, multiplier = multiplier)
 
 @StringRes
 fun getDescription(key: String): Int =
