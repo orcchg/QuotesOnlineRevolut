@@ -52,7 +52,7 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
     // --------------------------------------------------------------------------------------------
     private fun subscribeWithBase(base: String) {
         quotesSubscriber?.dispose()
-        quotesSubscriber = cloud.quotes(base).repeatWhen { it.delay(2, TimeUnit.SECONDS) }
+        quotesSubscriber = cloud.quotes(base).repeatWhen { it.delay(1, TimeUnit.SECONDS) }
             .skipWhile { isAnimatingListener?.invoke() == true }
             .subscribe({ quotes ->
                 adapter.apply {
