@@ -17,19 +17,14 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
         adapter.apply {
             setHasStableIds(true)
             setOnTopItemBound {
-                subscriber.dispose()
                 subscribeWithBase(base = it.name)
-//            stateMultiplierUpdated(multiplier = 1.0)  // drop multiplier
+                subscribeQuantityUpdates()
                 topUp.onNext(true)
-//                quantitySubscriber?.dispose()
-//            quantitySubscriber = adapter.quantityObservable?.subscribe(this::stateMultiplierUpdated, Timber::e)
             }
         }
     }
 
-    private var multiplier: Double = 1.0
-
-    private lateinit var subscriber: Disposable
+    private var quotesSubscriber: Disposable? = null
     private var quantitySubscriber: Disposable? = null
 
     private var isAnimatingListener: (() -> Boolean)? = null
@@ -39,7 +34,10 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
 
     override fun onCleared() {
         super.onCleared()
-        clear()
+        adapter.setOnTopItemBound(null)
+        quotesSubscriber?.dispose()
+        quantitySubscriber?.dispose()
+        topUp.onComplete()
     }
 
     fun start() {
@@ -52,44 +50,38 @@ class QuotesViewModel(private val cloud: Cloud) : ViewModel() {
 
     /* Internal */
     // --------------------------------------------------------------------------------------------
-    private fun clear() {
-        adapter.setOnTopItemBound(null)
-        subscriber.dispose()
-        quantitySubscriber?.dispose()
-        topUp.onComplete()
-    }
-
     private fun subscribeWithBase(base: String) {
-        subscriber = cloud.quotes(base).repeatWhen { it.delay(1, TimeUnit.SECONDS) }
+        quotesSubscriber?.dispose()
+        quotesSubscriber = cloud.quotes(base).repeatWhen { it.delay(2, TimeUnit.SECONDS) }
             .subscribe({ quotes ->
                 adapter.apply {
                     if (models.isEmpty()) {
                         val items = mutableListOf<QuoteVO>()
                         items.add(from("USD", quantity = 1.0))
-                        items.addAll(quotes.rates.map { from(name = it.key, quantity = it.value, multiplier = multiplier) })
+                        items.addAll(quotes.rates.map { from(name = it.key, quantity = it.value) })
                         models = items
                     } else {
                         models.forEach {
                             quotes.rates[it.name]?.apply {
                                 it.quantity = this
-                                it.multiplier = multiplier
+                                it.multiplier = models[9].multiplier
                             }
                         }
-                        notifyItemRangeChanged(1, models.size)
+                        notifyItemRangeChanged(1, models.size - 1)
                     }
                 }
             }, Timber::e)
     }
 
-    // ------------------------------------------
-    private fun stateMultiplierUpdated(multiplier: Double) {
-        this.multiplier = multiplier
-
-        adapter.apply {
-            for (i in 1 until models.size) {
-                models[i].multiplier = multiplier
+    private fun subscribeQuantityUpdates() {
+        quantitySubscriber?.dispose()
+        quantitySubscriber = adapter.quantityObservable?.subscribe({ multiplier ->
+            adapter.apply {
+                for (i in 1 until models.size) {
+                    models[i].multiplier = multiplier
+                }
+                notifyItemRangeChanged(1, models.size - 1)
             }
-            notifyItemRangeChanged(1, models.size - 1)
-        }
+        }, Timber::e)
     }
 }

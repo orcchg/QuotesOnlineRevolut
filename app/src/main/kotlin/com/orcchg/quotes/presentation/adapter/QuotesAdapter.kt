@@ -67,8 +67,8 @@ class QuotesAdapter : RecyclerView.Adapter<QuotesViewHolder>() {
     override fun onBindViewHolder(holder: QuotesViewHolder, position: Int) {
         holder.bind(model = models[position])
         if (position == 0) {
-            initQuantitySource(holder.itemView)
             topItemBound?.invoke(models[position])
+            initQuantitySource(holder.itemView)
         }
     }
 
